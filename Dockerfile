@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
+RUN npx prisma generate
 RUN npm run build
 
 # Jalankan server Next.js
@@ -24,4 +25,4 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && npm run start"]
+CMD ["sh", "-c", "npm run start"]
