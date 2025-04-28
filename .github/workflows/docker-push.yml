@@ -10,6 +10,14 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      AUTH_URL: ${{ secrets.AUTH_URL }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      BCRYPT_SALT_ROUNDS: ${{ secrets.BCRYPT_SALT_ROUNDS }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
