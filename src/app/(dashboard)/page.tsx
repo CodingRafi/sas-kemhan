@@ -1,24 +1,23 @@
 "use client";
 
+import { searchDashboardAtom } from "@/common/module/SettingsJotai";
 import LoadingGetData from "@/components/Loading/LoadingGetData";
+import Navigation from "@/components/Navigation/Navigation";
 import { useAllCctv } from "@/services/api/cctv/get/get.hooks";
 import { Cctv } from "@/types/Cctv/TypeCctv";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import Link from "next/link";
 import { IoMdQrScanner } from "react-icons/io";
 import { MdPushPin } from "react-icons/md";
 import { TfiTarget } from "react-icons/tfi";
 
 export default function Home() {
-  const [search, setSearch] = useState<string>("");
+  const [searchDashboard] = useAtom(searchDashboardAtom);
   const { isLoading, data } = useAllCctv();
 
   return (
     <>
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <Navigation />
       {isLoading ? (
         <LoadingGetData />
       ) : (
@@ -26,7 +25,7 @@ export default function Home() {
           {data?.data.map((item: Cctv, i: number) => (
             <div
               className={`relative rounded-md overflow-hidden border-2 border-cyan-neon h-48 ${
-                item.name.toLowerCase().includes(search.toLowerCase())
+                item.name.toLowerCase().includes(searchDashboard.toLowerCase())
                   ? ""
                   : "hidden"
               }`}
@@ -64,9 +63,9 @@ export default function Home() {
                 <button className="p-1 rounded text-white text-lg">
                   <TfiTarget />
                 </button>
-                <button className="p-1 rounded text-white text-lg">
+                <Link href={`/cctv/${item.user_id}`} className="p-1 rounded text-white text-lg">
                   <MdPushPin />
-                </button>
+                </Link>
                 <button className="p-1 rounded text-white text-lg">
                   <IoMdQrScanner />
                 </button>
